@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $fillable = ['number', 'user_id', 'item_id', 'amount'];
+    protected $fillable = ['user_id', 'item_id', 'number_of_items' ,'amount'];
 
     public function items() {
         return $this->belongsToMany(Item::class);
