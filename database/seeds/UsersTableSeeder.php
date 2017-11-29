@@ -14,7 +14,6 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-//        factory(User::class, 5)->create();
         factory(User::class, 2)->create()->each(function ($user) {
             $roleId = Role::where('name', 'admin')->first()->id;
             $user->roles()->attach($roleId,['created_at'=>Carbon::now(),'updated_at'=>Carbon::now()]);
