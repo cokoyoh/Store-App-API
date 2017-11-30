@@ -20,6 +20,7 @@ class CreateItemsTable extends Migration
             $table->integer('total_number')->unsigned(); //available number
             $table->double('price');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

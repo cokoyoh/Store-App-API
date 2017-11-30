@@ -18,6 +18,7 @@ class CreateItemOrderTable extends Migration
             $table->integer('item_id')->unsigned();
             $table->integer('order_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('item_id')
                 ->references('id')
