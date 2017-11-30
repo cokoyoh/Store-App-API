@@ -3,16 +3,43 @@
 namespace App\Http\Controllers;
 
 use App\Item;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ItemController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth')->only('store','update','destroy');
+    }
+
     public function index() {
-        $items = Item::orderBy('id', 'desc')->get();
+        $items = Item::orderBy('id', 'desc')->paginate(5)->get();
         return response(['data' => $items], 200);
     }
 
+    public function show($id) {
+        $item = Item::find($id);
+        return response(['data' => $item],200);
+    }
+
+    public function currentItems() {
+        $items = Item::where('created_at', '=', Carbon::today())->paginate(5)->get();
+        return response(['data' => $items],200);
+    }
+
+    public function weekOldItems() {
+        $week_old = Carbon::now()->subWeek();
+        $items = Item::where('created_at', '=', $week_old)->paginate(5)->get();
+        return response(['data' => $items],200);
+    }
+
     public function store() {
+        request()->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'total_number' => 'required'
+        ]);
+
          Item::create([
              'name' => request('name'),
              'description' => request('description'),
@@ -35,6 +62,6 @@ class ItemController extends Controller
     public function destroy($id) {
         $item = Item::find($id);
         $item->delete();
-        return response(['message' => 'Item has beed deleted'], 200);
+        return response(['message' => 'Item has been deleted'], 200);
     }
 }
